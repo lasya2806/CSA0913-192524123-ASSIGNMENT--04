@@ -3,11 +3,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class DrawingPad extends Frame {
+public class Main extends Frame {
 
     DrawingArea drawingArea;
 
-    DrawingPad() {
+    Main() {
 
         setTitle("Task 04 - Event Handling Drawing Pad");
         setSize(600, 450);
@@ -18,8 +18,8 @@ public class DrawingPad extends Frame {
         add(drawingArea, BorderLayout.CENTER);
 
         Label instruction = new Label(
-                "Click anywhere inside the drawing area to create dots.",
-                Label.CENTER
+            "Click anywhere inside the drawing area to create dots.",
+            Label.CENTER
         );
 
         add(instruction, BorderLayout.SOUTH);
@@ -47,10 +47,8 @@ public class DrawingPad extends Frame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                    // Store the clicked position
                     dots.add(new Point(e.getX(), e.getY()));
 
-                    // Redraw the drawing area
                     repaint();
                 }
             });
@@ -59,16 +57,15 @@ public class DrawingPad extends Frame {
         @Override
         public void paint(Graphics g) {
 
-            // Draw all previously stored dots
             g.setColor(Color.BLUE);
 
             for (Point point : dots) {
 
                 g.fillOval(
-                        point.x - 5,
-                        point.y - 5,
-                        10,
-                        10
+                    point.x - 5,
+                    point.y - 5,
+                    10,
+                    10
                 );
             }
         }
@@ -76,7 +73,6 @@ public class DrawingPad extends Frame {
 
     public static void main(String[] args) {
 
-        new DrawingPad();
+        new Main();
     }
 }
-
