@@ -1,1 +1,100 @@
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class FeeService {
+
+    public String pay(String regNo, String amount) {
+
+        if (regNo.isEmpty() || amount.isEmpty()) {
+            return "Please enter all details!";
+        }
+
+        try {
+            double a = Double.parseDouble(amount);
+
+            if (a <= 0) {
+                return "Amount must be greater than zero!";
+            }
+
+            return "Payment Successful!\nRegistration No: "
+                    + regNo + "\nAmount: Rs. " + a;
+
+        } catch (NumberFormatException e) {
+            return "Invalid amount!";
+        }
+    }
+}
+
+public class Main extends JFrame {
+
+    JTextField regNo, amount;
+    JButton pay, clear, receipt;
+
+    FeeService service = new FeeService();
+    String paymentReceipt = "";
+
+    Main() {
+
+        setTitle("Student Fee Payment");
+        setSize(400, 250);
+        setLayout(new GridLayout(4, 2, 10, 10));
+
+        add(new JLabel("Registration Number:"));
+        regNo = new JTextField();
+        add(regNo);
+
+        add(new JLabel("Amount:"));
+        amount = new JTextField();
+        add(amount);
+
+        pay = new JButton("Pay");
+        clear = new JButton("Clear");
+        receipt = new JButton("Receipt");
+
+        add(pay);
+        add(clear);
+        add(receipt);
+
+        pay.addActionListener(e -> {
+            paymentReceipt = service.pay(
+                    regNo.getText().trim(),
+                    amount.getText().trim()
+            );
+
+            JOptionPane.showMessageDialog(this, paymentReceipt);
+        });
+
+        clear.addActionListener(e -> {
+            regNo.setText("");
+            amount.setText("");
+            paymentReceipt = "";
+        });
+
+        receipt.addActionListener(e -> {
+            if (paymentReceipt.isEmpty()
+                    || !paymentReceipt.startsWith("Payment Successful")) {
+                JOptionPane.showMessageDialog(this,
+                        "No successful payment receipt available!");
+            } else {
+                JOptionPane.showMessageDialog(this, paymentReceipt);
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+            }
+        });
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Main());
+    }
+}
+
